@@ -7,7 +7,7 @@ export default function Home() {
   const [todoList, setToDoList] = useState([
     {id: 1, order: 1, text: 'greate ToDo List'},
     {id: 2, order: 2, text: 'jobs'},
-    {id: 3, order: 3, text: 'loocking videos'},
+    {id: 3, order: 3, text: 'watch the video'},
     {id: 4, order: 4, text: 'go to supermarket'},
   ]);
   const [selectedCard, setSelectedCard] = useState(null);
