@@ -51,7 +51,7 @@ function dropHandler(e, board, card){
   board.items.push(selectedCard)
   const currentIndex = selectedBoard.items.indexOf(selectedCard)
   selectedBoard.items.splice(currentIndex, 1)
-  setSelectedBoard(selectedBoard.map(el => {
+  setToDoList(toDoList.map(el => {
     if (el.id === board.id){
       return board
     }
