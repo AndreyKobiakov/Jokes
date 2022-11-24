@@ -1,74 +1,30 @@
-import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useCallback, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { dragEnd, dragLeave, dragOver, dragStart, dropCard, dropHand, submitToDo } from '../../redux/actions/actions'
 import './Home.css'
 
 
 export default function Home() {
+  const dispatch = useDispatch()
   const {toDo} = useSelector(s=>s)
+  console.log(toDo)
   const [toDoList, setToDoList] = useState(toDo.toDoS);
   const [selectedCard, setSelectedCard] = useState(null);
   const [selectedBoard, setSelectedBoard] = useState(null);
   const [input, setInput] = useState('');
- 
-function dragStartHandler(e, board, card){
-  setSelectedBoard(board);
-  setSelectedCard(card)
-}
-function dragLeaveHandler(e){
-  e.target.style.boxShadow = 'none';
-}
-function dragEndHandler(e){
-  e.target.style.boxShadow = 'none';
-  
-}
-function dragOverHandler(e){
- e.preventDefault()
- if(e.target.className === 'item');
- e.target.style.boxShadow = '0 5px 5px gray';
-}
-function dropHandler(e, board, card){
-  e.preventDefault()
-  const currentIndex = selectedBoard.items.indexOf(selectedCard)
-   selectedBoard.items.splice(currentIndex, 1)
-   const dropIndex = board.items.indexOf(card)
-   board.items.splice(dropIndex + 1, 0, selectedCard)
-   setToDoList(toDoList.map(el => {
-    if (el.id === board.id){
-      return board
-    }
-    if (el.id === selectedBoard.id){
-      return selectedBoard
-    }
-    return el
-  }))
-  e.target.style.boxShadow = "none"
- }
- function dropCardHandler(e, board){
-  board.items.push(selectedCard)
-  const currentIndex = selectedBoard.items.indexOf(selectedCard)
-  selectedBoard.items.splice(currentIndex, 1)
-  setToDoList(toDoList.map(el => {
-    if (el.id === board.id){
-      return board
-    }
-    if (el.id === selectedBoard.id){
-      return selectedBoard
-    }
-    return el
-  }))
-  e.target.style.boxShadow = "none"
- }
- const inputHandler = (e) => {
-  setInput(e.target.value);
+    
+  const inputHandler = useCallback((e) => {
+    setInput(e.target.value);
+  }, []);
+  const dragLeaveHandler= (e)=> dispatch(dragLeave(e))
+  const dragEndHandler= (e)=> dispatch(dragEnd(e))
+  const dragOverHandler= (e)=> dispatch(dragOver(e))
+  const dragStartHandler = (e, board, card)=>dispatch(dragStart(e, board, card, setSelectedBoard, setSelectedCard))
+  const submitHandler = (e)=> dispatch(submitToDo(e, toDoList, setToDoList, setInput, input))
+  const dropCardHandler= (e, board)=>dispatch(dropCard(e, board, selectedBoard, selectedCard, toDoList, setToDoList))
+  const dropHandler=(e, board, card)=>dispatch(dropHand(e, board, card, selectedBoard, selectedCard, toDoList, setToDoList))
 
-};
- const submitHandler = (e)=>{
-  e.preventDefault()
-  toDoList[0].items.splice(0, 0, {id: Math.round((Math.random() * ((100000000 - 6) + 1)) + 6), text: input })
-  setToDoList([...toDoList]);
-  setInput('');
- }
- return (
+return (
     <div className="cardHome">
       {toDoList.map(board => 
       <div key={board.id} className="card">

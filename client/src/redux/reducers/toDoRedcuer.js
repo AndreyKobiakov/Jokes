@@ -1,4 +1,4 @@
-import { DELETE_TODO, SAVE_TODO, GET_TODO } from '../types';
+import { DELETE_TODO, ADD_TODO, GET_TODO } from '../types';
 
 let initialState = {
   toDoS: [
@@ -60,7 +60,7 @@ let initialState = {
 const toDoReducer = (state = initialState, action) => {
   const { type, payload } = action;
   switch (type) {
-    case SAVE_TODO:
+    case ADD_TODO:
       return [...state, payload];
     case GET_TODO:
       return [payload];
