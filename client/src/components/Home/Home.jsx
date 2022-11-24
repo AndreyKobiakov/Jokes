@@ -1,19 +1,15 @@
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 import './Home.css'
 
 
 export default function Home() {
-  const [toDoList, setToDoList] = useState([
-    {id: 1, title: "Сделать", items:[{ id: 1, text: "Выкинуть мусор"},{ id: 2, text: "Покодить"},{ id: 3, text: "Решить задачу"}]},
-    {id: 2, title: "Проверить", items:[{ id: 4, text: "Сходить в магазин"},{ id: 5, text: "Приготовить обед"},{ id: 6, text: "Посмотреть фильм"}]},
-    {id: 3, title: "Сделано", items:[{ id: 7, text: "Погулять с собакой"},{ id: 8, text: "Забрать ребенка из школы"},{ id: 9, text: "Досмотреть сериал"}]}
- 
-  ]);
-
+  const {toDo} = useSelector(s=>s)
+  const [toDoList, setToDoList] = useState(toDo.toDoS);
   const [selectedCard, setSelectedCard] = useState(null);
   const [selectedBoard, setSelectedBoard] = useState(null);
   const [input, setInput] = useState('');
-
+ 
 function dragStartHandler(e, board, card){
   setSelectedBoard(board);
   setSelectedCard(card)
@@ -72,9 +68,7 @@ function dropHandler(e, board, card){
   setToDoList([...toDoList]);
   setInput('');
  }
-console.log('input', input)
-console.log('toDo', toDoList)
-  return (
+ return (
     <div className="cardHome">
       {toDoList.map(board => 
       <div key={board.id} className="card">
