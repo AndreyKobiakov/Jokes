@@ -12,7 +12,7 @@ export default function Home() {
 
   const [selectedCard, setSelectedCard] = useState(null);
   const [selectedBoard, setSelectedBoard] = useState(null);
-
+  const [input, setInput] = useState('');
 
 function dragStartHandler(e, board, card){
   setSelectedBoard(board);
@@ -62,6 +62,18 @@ function dropHandler(e, board, card){
   }))
   e.target.style.boxShadow = "none"
  }
+ const inputHandler = (e) => {
+  setInput(e.target.value);
+
+};
+ const submitHandler = (e)=>{
+  e.preventDefault()
+  toDoList[0].items.splice(0, 0, {id: Math.round((Math.random() * ((100000000 - 6) + 1)) + 6), text: input })
+  setToDoList([...toDoList]);
+  setInput('');
+ }
+console.log('input', input)
+console.log('toDo', toDoList)
   return (
     <div className="cardHome">
       {toDoList.map(board => 
@@ -79,11 +91,14 @@ function dropHandler(e, board, card){
           onDrop={(e) => dropHandler(e, board, card)}
           draggable = {true}
           className="item"
-        key = {card.id}>
+          key = {card.id}>
         {card.text}
       </div>)}
       </div>)
         }
+        <form onSubmit= {submitHandler}>
+          <input type="text" onChange={inputHandler} value={input} name="text"/><button type="submit">Add</button>
+        </form>
     </div>
   )
 }
